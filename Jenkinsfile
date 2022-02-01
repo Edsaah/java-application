@@ -19,8 +19,14 @@ pipeline{
         }
         
         stage('SonarQube'){
+            environment{
+                    scannerHome = tool 'Sonar'
+                }
             steps{
-                echo "sonar"
+                withSonarQubeEnv('SonarServer'){
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Java_Application -Dsonar.sources=. -Dsonar.java.binaries=target/classes/com/mycompany/app/"
+                }
+                
             }
         }
     }
